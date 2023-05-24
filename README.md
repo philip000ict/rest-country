@@ -1,4 +1,4 @@
-# shopping-list
+# rest-country
 
 ## Project setup
 ```
