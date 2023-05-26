@@ -1,7 +1,8 @@
 <template>
   <div id="app">
-    <h1>REST Countries</h1>
-    <label for="countries">Choose a Country:</label><br>
+    <div id="wrapper">
+      <h1>REST Countries</h1>
+      <label for="countries">Choose a Country:</label><br>
 
 <select name="country" id="country">
   <option value="country-name" v-for="item of items" :key="item.id">
@@ -9,17 +10,18 @@
   </option>
 </select> 
 
-  <ul>
-    <li v-for="item of items" :key="item.id">
+
+    <div v-for="item of items" :key="item.id" id="country-info">
       <h3>{{ item.name.official}} </h3>
-      <img src="{{ item.flags.png }}" width="70" height="50"><br>
+      
+      <img :src="item.flags.png" class="w-full h-full" /><br>
       {{ item.flags.alt }}<br>
       {{ item.cca2 }}<br>
       {{ item.cca3 }}<br>
       
       {{ item.idd.root }}, {{ item.idd.suffixes }}<br>
-    </li>
-  </ul>
+    </div>
+  </div>
 </div>
 </template>
 <script>
@@ -51,3 +53,23 @@ export default {
   },
 };
 </script>
+<style>
+  #country-info{
+    width: 80%;
+    padding:20px;
+    background-color: powderblue;
+    margin: auto;
+    margin-top: 20px;
+    border-radius: 30px;
+    border-color: blueviolet;
+    border-width: 2px;
+    position: relative;
+
+} 
+  #wrapper{
+    margin:auto;
+    width:50%
+
+}
+
+</style>
