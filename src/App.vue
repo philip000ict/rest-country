@@ -8,18 +8,20 @@
   <option value="country-name" v-for="item of items" :key="item.id">
     {{ item.name.common }}
   </option>
-</select> 
+</select> <br>
 
 
     <div v-for="item of items" :key="item.id" id="country-info">
-      <h3>{{ item.name.official}} </h3>
+      <button type="button" @click="displayinfo(item)"><h3>{{ item.name.official}} </h3></button>
       
-      <img :src="item.flags.png" class="w-full h-full" /><br>
-      {{ item.flags.alt }}<br>
-      {{ item.cca2 }}<br>
-      {{ item.cca3 }}<br>
+      <img :src="item.flags.png" width=350 height = 200 class="flag" /><br>     
+      2 character Country Code: <b>{{ item.cca2 }}</b><br>
+      3 character Country Code: <b>{{ item.cca3 }}</b><br>      
+      International Dialling IDD <b>{{ item.idd.root }}, {{ item.idd.suffixes }}</b><br>
       
-      {{ item.idd.root }}, {{ item.idd.suffixes }}<br>
+      
+      Native Country Name; {{ item.name.nativeName}}
+      <button onclick="myFunction()">Click me</button>
     </div>
   </div>
 </div>
@@ -32,43 +34,38 @@ export default {
     return {
       items: [],
       itemName: "",
+      nativename:[]
     };
   },
   async created() {
     try {
       const res = await axios.get(`https://restcountries.com/v3.1/all`);
       this.items = res.data;
+      this.nativename = this.name.nativeName
     } catch (error) {
       console.log(error);
     }
   },
   methods: {
-    async addItem() {
-      const res = await axios.post(`https://restcountries.com/v3.1/all`, {
-        name: this.itemName,
-      });
-      this.items = [...this.items, res.data];
-      this.itemName = "";
+    displayinfo(country) {
+      alert(JSON.stringify(country, null, 4))
     },
   },
 };
 </script>
 <style>
   #country-info{
-    width: 80%;
+    width: 350px;
     padding:20px;
     background-color: powderblue;
-    margin: auto;
-    margin-top: 20px;
+    margin: 20px;
     border-radius: 30px;
     border-color: blueviolet;
     border-width: 2px;
-    position: relative;
-
+    display: inline-block;
 } 
   #wrapper{
-    margin:auto;
-    width:50%
+    background-color: salmon;
 
 }
 
