@@ -22,3 +22,5 @@
     <li v-for="item of items" :key="item.id">
       {{ item.flags.alt }}
     </li>
+
+    {{ item.flags.alt }}<br>
