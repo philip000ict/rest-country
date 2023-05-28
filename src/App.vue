@@ -6,16 +6,16 @@
       <button class ="navbutton" type="button" @click="pagination(-25)">Back</button>
       <button class ="navbutton" type="button" @click="pagination(25)">Next</button>
 
-  <select name="country" id="country" >
+  <select name="country" class="country_select" >
     <option value="country-name" v-for="item of name_list" :key="item.id" >
       {{ item }}
     </option>
-  </select> <br>
+  </select> 
+  <button class ="navbutton" type="button" @click="$event => reverse_order()">Reverse</button>
   </div>
   <div id="flagdiv">
     <div class="card" v-for="item of items" :key="item.id"  @click="displayinfo(item)">
-      <p class="countryName">
-        {{ item.name.official}}</p>
+      <h1>{{ item.name.official}}</h1>
       
         <img :src="item.flags.png" width=350 height = 200 class="flag" /><br>     
         2 character Country Code: <b>{{ item.cca2 }}</b><br>
@@ -54,6 +54,10 @@ export default {
     }
   },
   methods: {
+    reverse_order(){
+      this.name_list.reverse();
+      this.pagination(0);
+    },
     increment(page){
       this.start += page
     },
@@ -61,7 +65,6 @@ export default {
       console.log(name)
     },
     pagination(page){
-      //this.increment(page)
       this.items.length = 0;
       this.start += page;
       if(this.start < 0){this.start = 0}
@@ -88,7 +91,7 @@ export default {
 <style>
   .card{
     width: 350px;
-    height: 350px;
+    height: 400px;
     padding:20px;
     background-color: powderblue;
     margin: 20px;
@@ -97,32 +100,35 @@ export default {
     vertical-align: top;
 
 } 
-.countryName{
-  font-size: 24px;
+h1{
   text-align: center;
 }
   #wrapper{
-    margin-top: 20px;
-    padding: 20px;
+    margin: -10px;
 }
   .navbutton{
-    height:50px;
-    width: 100px;
+    font-size: 30px;
+    padding:15px;
+    margin-left: 40px;
+    background-color: aliceblue;
+    border-radius: 30px;
+  }
+  select{
+    font-size: 30px;
+    padding:15px;
+    width:500px;
     margin: 20px;
-    background-color: powderblue;
+    margin-left: 40px;
+    background-color: aliceblue;
+    border-radius: 30px;
   }
 #navbar{
-  background-color: aliceblue;
+  background-color: powderblue;
   position: fixed; /* Set the navbar to fixed position */
   top: 0; /* Position the navbar at the top of the page */
   width: 100%; /* Full width */
   margin-bottom:20px;
 }
-  .button{
-    border: none;
-    background-color: lemonchiffon;
-    
-  }
   #flagdiv{
     padding-top: 200px;
   }
