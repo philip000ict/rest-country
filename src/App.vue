@@ -2,19 +2,14 @@
   <div id="app">
     <div id="wrapper">
       <h1>REST Countries</h1>
-      <button type="button" @click="showflag(25)">
-        Central African Republic</button>
+      <button type="button" @click="pagination(-25)">Back</button>
+      <button type="button" @click="pagination(25)">Next</button>
 <select name="country" id="country">
   <option value="country-name" v-for="item of name_list" :key="item.id">
     {{ item }}
   </option>
 </select> <br>
-
-
     <div v-for="item of items" :key="item.id" id="country-info">
-
-      
-
       <h2 type="button" @click="displayinfo(item)">
         {{ item.name.official}}</h2>
       
@@ -22,8 +17,6 @@
       2 character Country Code: <b>{{ item.cca2 }}</b><br>
       3 character Country Code: <b>{{ item.cca3 }}</b><br>      
       International Dialling IDD <b>{{ item.idd.root }}, {{ item.idd.suffixes }}</b><br>
-    
-      
       Native Country Name; {{ item.name.nativeName}}
     </div>
   </div>
@@ -36,66 +29,68 @@ export default {
   data() {
     return {
       items: [],
-      ascending: true,
-      sortBy: 'alphabetically',
-      searchValue: '',
-      name_list:[]
+      all_countries:[],
+      name_list:[],
+      index_name_list:[],
+      start:0,
     };
   },
   async created() {
     try {
-      const res = await axios.get(`https://restcountries.com/v3.1/all`);
-      this.items = res.data;
-      this.name_list=[]
-      //this.c_names = JSON.parse(this.items)
-      for (let i = 0; i < this.items.length; i++) {
-        
-      this.name_list.push(this.items[i].name.official)
+      const res = await axios.get(`https://restcountries.com/v3.1/all?`);
+      this.all_countries = res.data;
+      for (let i = 0; i < this.all_countries.length; i++) {       
+        this.name_list.push(this.all_countries[i].name.official)
+        this.index_name_list.push(this.all_countries[i].name.official)
       }
-      this.name_list.sort()
-      console.log(JSON.stringify(this.name_list))
-    
+      this.name_list.sort();
+      this.pagination(0);
     } catch (error) {
       console.log(error);
     }
   },
   methods: {
+    increment(page){
+      this.start += page
+    },
+    pagination(page){
+      //this.increment(page)
+      this.items.length = 0;
+      this.start += page;
+      if(this.start < 0){this.start = 0}
+      if(this.start > this.all_countries.length - 25){this.start = this.all_countries.length-25}
+      for (let i = this.start+0; i < this.start+25; i++) {
+        this.country_index = this.index_name_list.indexOf(this.name_list[i])
+        console.log(this.name_list[i])
+        console.log(this.index_name_list.indexOf(this.name_list[i]))
+        this.items.push(this.all_countries[this.country_index]); 
+      }
+    },
     displayinfo(country) {      
       alert(JSON.stringify(country))
     },
-    showflag(country_id){
-      this.flagbox=this.items[country_id]
-      console.log(JSON.stringify(this.flagbox, null, 2))
-      
-    }
   },
-  computed: {
-	sortedArray() {
-		let filtereditems = JSON.stringify(this.items)
-    //let filtereditems = this.items
-    console.log(filtereditems.name)
-		console.log(filtereditems)
-		
-    return filtereditems
-	}
-},
 };
 </script>
 <style>
   #country-info{
     width: 350px;
+    height: 500px;
     padding:20px;
     background-color: powderblue;
-    margin: 20px;
+    margin-left: 20px;
     border-radius: 30px;
     border-color: blueviolet;
     border-width: 2px;
     display: inline-block;
 } 
   #wrapper{
-    background-color: salmon;
-
+    padding: 20px;
 }
+  .body{
+
+  }
+
   .button{
     border: none;
     background-color: lemonchiffon;
