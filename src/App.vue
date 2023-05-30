@@ -3,13 +3,12 @@
     <div id="wrapper">
       <div id="navbar"> 
       <h1>REST Countries -by Philip Barnes</h1>
-      
         <div id="buttonBox">
       <button class ="navbutton" type="button" @click="pagination(-25)">Back</button>
       <button class ="navbutton" type="button" @click="pagination(25)">Next</button>
 
-  <select name="country" class="country_select" >
-    <option value="country-name" v-for="item of name_list" :key="item.id" @select="displayinfo(item)">
+  <select name="country" class="country_select"  v-model="selected" @change="countryinfo" text="Select Country">
+    <option  v-for="item of name_list" :key="item.id" >
       {{ item }}
     </option>
   </select> 
@@ -18,8 +17,7 @@
 </div><br>
   <div id="flagdiv">
     <div class="card" v-for="item of items" :key="item.id"  @click="searchinfo(item)">
-      <h1>{{ item.name.official}}</h1>
-      
+      <h1>{{ item.name.official}}</h1>     
         <img :src="item.flags.png" width=350 height = 200 class="flag" /><br>     
         2 character Country Code: <b>{{ item.cca2 }}</b><br>
         3 character Country Code: <b>{{ item.cca3 }}</b><br>      
@@ -40,6 +38,7 @@ export default {
       name_list:[],
       index_name_list:[],
       start:0,
+      selected:"Choose a country"
     };
   },
   async created() {
@@ -83,6 +82,10 @@ export default {
       country_string = this.beautify(country_string)     
       alert(country_string)
     }, 
+    countryinfo() {
+      this.selected_country =  this.beautify(JSON.stringify(this.all_countries[this.index_name_list.indexOf(this.selected)]))
+      alert(this.selected_country)
+    },
     searchinfo(country) {
       console.log(country)     
       var country_string = JSON.stringify(country)
