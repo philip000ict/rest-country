@@ -1,20 +1,23 @@
 <template>
   <div id="app">
     <div id="wrapper">
-      <div id="navbar">
-      <h1>REST Countries</h1>
+      <div id="navbar"> 
+      <h1>REST Countries -by Philip Barnes</h1>
+      
+        <div id="buttonBox">
       <button class ="navbutton" type="button" @click="pagination(-25)">Back</button>
       <button class ="navbutton" type="button" @click="pagination(25)">Next</button>
 
   <select name="country" class="country_select" >
-    <option value="country-name" v-for="item of name_list" :key="item.id" >
+    <option value="country-name" v-for="item of name_list" :key="item.id" @select="displayinfo(item)">
       {{ item }}
     </option>
   </select> 
   <button class ="navbutton" type="button" @click="$event => reverse_order()">Reverse</button>
   </div>
+</div><br>
   <div id="flagdiv">
-    <div class="card" v-for="item of items" :key="item.id"  @click="displayinfo(item)">
+    <div class="card" v-for="item of items" :key="item.id"  @click="searchinfo(item)">
       <h1>{{ item.name.official}}</h1>
       
         <img :src="item.flags.png" width=350 height = 200 class="flag" /><br>     
@@ -44,8 +47,8 @@ export default {
       const res = await axios.get(`https://restcountries.com/v3.1/all?`);
       this.all_countries = res.data;
       for (let i = 0; i < this.all_countries.length; i++) {       
-        this.name_list.push(this.all_countries[i].name.official)
-        this.index_name_list.push(this.all_countries[i].name.official)
+        this.name_list.push(this.all_countries[i].name.common)
+        this.index_name_list.push(this.all_countries[i].name.common)
       }
       this.name_list.sort();
       this.pagination(0);
@@ -74,11 +77,18 @@ export default {
         this.items.push(this.all_countries[this.country_index]); 
       }
     },
-    displayinfo(country) {     
+    displayinfo(country) {
+      console.log(country)     
       var country_string = JSON.stringify(country)
       country_string = this.beautify(country_string)     
       alert(country_string)
     }, 
+    searchinfo(country) {
+      console.log(country)     
+      var country_string = JSON.stringify(country)
+      country_string = this.beautify(country_string)     
+      alert(country_string)
+    },
     beautify(obj){
       obj = obj.replace(/[{}]/g," ")
       obj = obj.replace(/[":"]/g,' ')
@@ -94,7 +104,7 @@ export default {
     height: 400px;
     padding:20px;
     background-color: powderblue;
-    margin: 20px;
+    margin: 40px;
     border-radius: 30px;
     display:inline-block;
     vertical-align: top;
@@ -123,13 +133,21 @@ h1{
     border-radius: 30px;
   }
 #navbar{
-  background-color: powderblue;
-  position: fixed; /* Set the navbar to fixed position */
-  top: 0; /* Position the navbar at the top of the page */
-  width: 100%; /* Full width */
+  background-image: linear-gradient(lightblue 33%, blue);
+  position: fixed;
+  top: 0; 
+  width: 100%; 
   margin-bottom:20px;
+  margin-top: 0px;
+  padding-left: 40px;
+  z-index: 2;
 }
+  #buttonBox{
+    margin: auto;
+  }
   #flagdiv{
-    padding-top: 200px;
+    position: relative;
+    margin-top: 150px;
+    padding-top: 25px;
   }
 </style>
