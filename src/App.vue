@@ -7,11 +7,11 @@
       <button class ="navbutton" type="button" @click="pagination(-25)">Back</button>
       <button class ="navbutton" type="button" @click="pagination(25)">Next</button>
 
-  <select name="country" class="country_select"  v-model="selected" @change="countryinfo" text="Select Country">
-    <option  v-for="item of name_list" :key="item.id" >
-      {{ item }}
-    </option>
-  </select> 
+<select v-model="selected" class="country_select" @change="countryinfo">
+  <option disabled value="">Select a Country</option>
+  <option v-for="item of name_list" :key="item">{{ item }}</option>
+</select>
+
   <button class ="navbutton" type="button" @click="$event => reverse_order()">Reverse</button>
   </div>
 </div><br>
@@ -38,18 +38,22 @@ export default {
       name_list:[],
       index_name_list:[],
       start:0,
-      selected:"Choose a country"
+      selected: ''
     };
   },
   async created() {
+    console.log("async entered at l45");
     try {
-      const res = await axios.get(`https://restcountries.com/v3.1/all?`);
+      const res = await axios.get(  'https://restcountries.com/v3.1/all?fields=name,languages,flags,capital,currencies,idd,cca2,cca3');
       this.all_countries = res.data;
+      
       for (let i = 0; i < this.all_countries.length; i++) {       
         this.name_list.push(this.all_countries[i].name.common)
         this.index_name_list.push(this.all_countries[i].name.common)
+        
       }
       this.name_list.sort();
+      console.log("this.name_list = ", this.name_list);
       this.pagination(0);
     } catch (error) {
       console.log(error);
