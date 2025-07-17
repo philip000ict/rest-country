@@ -1,5 +1,8 @@
 # rest-country
 
+## docker container available at 
+philip000ict/vue-country-app:v3.1
+
 ## Project setup
 ```
 npm install
